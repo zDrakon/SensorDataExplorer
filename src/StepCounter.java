@@ -41,22 +41,20 @@ public class StepCounter {
 	 * @param sensorData
 	 * @return
 	 */
-	public static double[] countSteps(double[] times, double[][] sensorData) {
+	public static double[] countSteps(double[] times, double[][] sensorData, int range) {
 		double[] magnitudesOfAccelerations = calculateMagnitudesFor(sensorData);
 		double[] count = new double[times.length];
-
-		double threshold = calculateMean(magnitudesOfAccelerations)
-				+ (calculateStandardDeviation(magnitudesOfAccelerations));
-		double minthreshold = calculateMean(magnitudesOfAccelerations)
-				- (calculateStandardDeviation(magnitudesOfAccelerations));
-		for (int i = 1; i < magnitudesOfAccelerations.length - 1; i++) {
-			if (isPeak(magnitudesOfAccelerations, i) && magnitudesOfAccelerations[i] >= threshold
-					&& magnitudesOfAccelerations[i + 1] <= minthreshold) {
+				
+		
+		for (int i = 0; i < magnitudesOfAccelerations.length - 1; i++) {
+			double threshold = findThreshold(magnitudesOfAccelerations, range , i);
+			if ( magnitudesOfAccelerations[i] >= threshold) {
 
 				count[i]++;
 
 			}
 		}
+	
 
 		return count;
 	}
@@ -163,4 +161,17 @@ public class StepCounter {
 
 	}
 
+
+	public static double findThreshold(double[] data, int range, int index){
+		double output[] = new double[(index+range)-(index-range)];
+		int j = 0;
+		for (int i =  (Math.max(index-range, 0)); i < Math.min(index+range,data.length-1); i++) {
+			output[j] = data[i];
+			j++;
+		}
+		return calculateStandardDeviation(output) + calculateMean(output);
+		
+		
+		
+	}
 }

@@ -28,7 +28,7 @@ public class Tester {
 
 		double[][] displayData = ArrayHelper.combineAsColumns(times, accelerationMagnitudes);
 
-		double[] counts = StepCounter.countSteps(times, accelerationData);
+		double[] counts = StepCounter.countSteps(times, accelerationData, 2);
 
 		double[][] correspondStepsToTime = ArrayHelper.combineAsColumns(times, counts);
 
