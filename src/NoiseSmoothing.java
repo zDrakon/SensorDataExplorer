@@ -66,6 +66,7 @@ public class NoiseSmoothing {
 			output[i] = StepCounter.calculateMean(partialData);
 		}
 		return output;
+
 	}
 
 	/***
