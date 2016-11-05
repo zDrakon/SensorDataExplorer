@@ -38,7 +38,7 @@ public class CSVData {
 			}
 		}
 	}
-	
+
 	public CSVData(String filepath, int startRow) {
 		String dataString = readFileAsString(filepath);
 		String[] lines = dataString.split("\n");
