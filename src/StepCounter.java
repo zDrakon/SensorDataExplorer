@@ -47,7 +47,7 @@ public class StepCounter {
 
 		for (int i = 0; i < magnitudesOfAccelerations.length - 1; i++) {
 			double threshold = findThreshold(magnitudesOfAccelerations, range, i);
-			if (magnitudesOfAccelerations[i] >= threshold) {
+			if (magnitudesOfAccelerations[i] >= threshold && isPeak(magnitudesOfAccelerations, i)) {
 
 				count[i]++;
 
@@ -55,6 +55,14 @@ public class StepCounter {
 		}
 
 		return count;
+	}
+
+	private static boolean isPeak(double[] magnitudesOfAccelerations, int i) {
+		if (magnitudesOfAccelerations[i - 1] < magnitudesOfAccelerations[i]
+				&& magnitudesOfAccelerations[i + 1] < magnitudesOfAccelerations[i]) {
+			return true;
+		}
+		return false;
 	}
 
 	/***
