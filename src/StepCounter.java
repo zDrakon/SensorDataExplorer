@@ -45,12 +45,14 @@ public class StepCounter {
 		double[] magnitudesOfAccelerations = calculateMagnitudesFor(sensorData);
 		double[] count = new double[times.length];
 
-		for (int i = 0; i < magnitudesOfAccelerations.length - 1; i++) {
+		for (int i = 1; i < magnitudesOfAccelerations.length - 1; i++) {
 			double threshold = findThreshold(magnitudesOfAccelerations, range, i);
-			if (magnitudesOfAccelerations[i] >= threshold && isPeak(magnitudesOfAccelerations, i)) {
+			if (isPeak(magnitudesOfAccelerations, i)) {
+				if (magnitudesOfAccelerations[i] >= threshold) {
 
-				count[i]++;
+					count[i]++;
 
+				}
 			}
 		}
 
