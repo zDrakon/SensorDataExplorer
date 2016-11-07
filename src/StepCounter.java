@@ -124,21 +124,13 @@ public class StepCounter {
 	 */
 
 	public static int numSteps(double[] counts) {
-
 		int count = 0;
-
 		for (int i = 0; i < counts.length; i++) {
-
 			if (counts[i] == 1) {
-
 				count++;
-
 			}
-
 		}
-
 		return count;
-
 	}
 
 	public static double findThreshold(double[] data, int range, int index) {

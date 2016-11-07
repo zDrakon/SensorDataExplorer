@@ -1,10 +1,8 @@
-import java.util.Arrays;
-
 public class Tester {
 
 	public static double[][] sampleData;
 
-	public static String datafile = "data/anklewalk_11steps_after5seconds_before5seconds_straightpath.csv";
+	public static String datafile = "data/pocketwalk_15steps_after_5_seconds.csv";
 
 	public static String videofile = "data/walkingSampleData.mp4";
 
@@ -15,6 +13,7 @@ public class Tester {
 		CSVData dataset = new CSVData(datafile, 1);
 
 		sampleData = dataset.getData();
+		dataset.writeDataToFile(datafile, dataset.getHugeStringOfData(sampleData));
 
 		// Extract columns for time, and x acceleration, y acceleration, z
 
@@ -31,11 +30,13 @@ public class Tester {
 
 		// "mags" }, videofile);
 
-		System.out.println(Arrays.toString(ArrayHelper.extractColumn(correspondStepsToTime, 0)) + "\n"
-
-				+ Arrays.toString(ArrayHelper.extractColumn(correspondStepsToTime, 1)));
-
-		System.out.println(StepCounter.numSteps(counts));
+		// System.out.println(Arrays.toString(ArrayHelper.extractColumn(correspondStepsToTime,
+		// 0)) + "\n"
+		//
+		// + Arrays.toString(ArrayHelper.extractColumn(correspondStepsToTime,
+		// 1)));
+		//
+		// System.out.println(StepCounter.numSteps(counts));
 
 	}
 

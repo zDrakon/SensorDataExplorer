@@ -61,7 +61,7 @@ public class CSVData {
 			String line = lines[startRow + i];
 			String[] coords = line.split(",");
 			for (int j = 0; j < numColumns; j++) {
-				if (coords[j].endsWith("\n"))
+				if (coords[j].endsWith("#"))
 					coords[j] = coords[j].substring(0, coords[j].length() - 1);
 				double val = Double.parseDouble(coords[j]);
 				getData()[i][j] = val;
@@ -270,12 +270,39 @@ public class CSVData {
 	 */
 	public static void replaceAbswithElapsed(double[][] sensorData) {
 		for (int row = 1; row < sensorData.length; row++) {
-			sensorData[row][0] -= sensorData[1][0];
+			sensorData[row][0] -= sensorData[0][0];
 		}
-		sensorData[1][0] = 0;
+		sensorData[0][0] = 0;
 	}
 
-	public static void writeDataToFile(String filePath, String data) {
+	public String getHugeStringOfData(double[][] data) {
+		String output = extractContent(columnNames);
+		for (int r = 0; r < data.length; r++) {
+			for (int c = 0; c < data[0].length; c++) {
+				if (c == data[0].length - 1) {
+					output += data[r][c] + "\n";
+				} else {
+					output += data[r][c] + ", ";
+				}
+			}
+		}
+		output += "\n";
+		return output;
+	}
+
+	private String extractContent(String[] columnNames) {
+		String output = "";
+		for (int i = 0; i < columnNames.length; i++) {
+			if (i == columnNames.length - 1) {
+				output += columnNames[i];
+			} else {
+				output += columnNames[i] + ", ";
+			}
+		}
+		return output + "\n";
+	}
+
+	public void writeDataToFile(String filePath, String data) {
 		File outFile = new File(filePath);
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(outFile))) {
