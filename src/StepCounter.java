@@ -44,47 +44,17 @@ public class StepCounter {
 	public static double[] countSteps(double[] times, double[][] sensorData, int range) {
 		double[] magnitudesOfAccelerations = calculateMagnitudesFor(sensorData);
 		double[] count = new double[times.length];
-				
-		
+
 		for (int i = 0; i < magnitudesOfAccelerations.length - 1; i++) {
-			double threshold = findThreshold(magnitudesOfAccelerations, range , i);
-			if ( magnitudesOfAccelerations[i] >= threshold) {
+			double threshold = findThreshold(magnitudesOfAccelerations, range, i);
+			if (magnitudesOfAccelerations[i] >= threshold) {
 
 				count[i]++;
 
 			}
 		}
-	
 
 		return count;
-	}
-
-	/***
-	 * turns the times in the first column of the array into elapsed time
-	 * 
-	 * @param sensorData
-	 */
-	public static void replaceAbswithElapsed(double[][] sensorData) {
-		for (int row = 1; row < sensorData.length; row++) {
-			sensorData[row][0] -= sensorData[1][0];
-		}
-		sensorData[1][0] = 0;
-	}
-
-	/***
-	 * Returns true or false comparing a index to 2 other indexes (one before
-	 * and after) to determine if it is a peak
-	 * 
-	 * @param magnitudesOfAccelerations
-	 * @param i
-	 * @return true or false, indicate peak.
-	 */
-	private static boolean isPeak(double[] magnitudesOfAccelerations, int i) {
-		if (magnitudesOfAccelerations[i - 1] < magnitudesOfAccelerations[i]
-				&& magnitudesOfAccelerations[i + 1] < magnitudesOfAccelerations[i]) {
-			return true;
-		}
-		return false;
 	}
 
 	/***
@@ -161,17 +131,14 @@ public class StepCounter {
 
 	}
 
-
-	public static double findThreshold(double[] data, int range, int index){
-		double output[] = new double[(index+range)-(index-range)];
+	public static double findThreshold(double[] data, int range, int index) {
+		double output[] = new double[(index + range) - (index - range)];
 		int j = 0;
-		for (int i =  (Math.max(index-range, 0)); i < Math.min(index+range,data.length-1); i++) {
+		for (int i = (Math.max(index - range, 0)); i < Math.min(index + range, data.length - 1); i++) {
 			output[j] = data[i];
 			j++;
 		}
 		return calculateStandardDeviation(output) + calculateMean(output);
-		
-		
-		
+
 	}
 }

@@ -1,4 +1,6 @@
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -37,6 +39,8 @@ public class CSVData {
 				getData()[i][j] = val;
 			}
 		}
+
+		replaceAbswithElapsed(data);
 	}
 
 	public CSVData(String filepath, int startRow) {
@@ -63,6 +67,8 @@ public class CSVData {
 				getData()[i][j] = val;
 			}
 		}
+
+		replaceAbswithElapsed(data);
 	}
 
 	private String readFileAsString(String filepath) {
@@ -256,4 +262,27 @@ public class CSVData {
 	public void setData(double[][] data) {
 		this.data = data;
 	}
+
+	/***
+	 * turns the times in the first column of the array into elapsed time
+	 * 
+	 * @param sensorData
+	 */
+	public static void replaceAbswithElapsed(double[][] sensorData) {
+		for (int row = 1; row < sensorData.length; row++) {
+			sensorData[row][0] -= sensorData[1][0];
+		}
+		sensorData[1][0] = 0;
+	}
+
+	public static void writeDataToFile(String filePath, String data) {
+		File outFile = new File(filePath);
+
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(outFile))) {
+			writer.write(data);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
