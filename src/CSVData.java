@@ -14,6 +14,7 @@ public class CSVData {
 	private double[][] data;
 	private String[] columnNames;
 	private int numColumns;
+	private String charReplace = ", ";
 
 	public CSVData(String filepath, String[] columnNames, int startRow) {
 		String dataString = readFileAsString(filepath);
@@ -50,7 +51,7 @@ public class CSVData {
 		// number of data points
 		int n = lines.length - startRow;
 		// create storage for column names
-		this.columnNames = lines[0].split(", ");
+		this.columnNames = lines[0].split(charReplace);
 
 		this.numColumns = columnNames.length;
 
@@ -286,8 +287,8 @@ public class CSVData {
 				}
 			}
 		}
-		output += "\n";
-		return output;
+		return output += "\n";
+
 	}
 
 	private String extractContent(String[] columnNames) {
