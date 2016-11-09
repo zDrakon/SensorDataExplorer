@@ -47,6 +47,8 @@ public class StepCounter {
 
 		for (int i = 1; i < magnitudesOfAccelerations.length - 1; i++) {
 			double threshold = findThreshold(magnitudesOfAccelerations, range, i);
+			// double threshold = calculateMean(magnitudesOfAccelerations)
+			// + calculateStandardDeviation(magnitudesOfAccelerations);
 			if (isPeak(magnitudesOfAccelerations, i)) {
 				if (magnitudesOfAccelerations[i] >= threshold) {
 
@@ -56,6 +58,25 @@ public class StepCounter {
 			}
 		}
 
+		return count;
+	}
+
+	public static double[] naiveCountSteps(double[] times, double[][] sensorData) {
+		double[] magnitudesOfAccelerations = calculateMagnitudesFor(sensorData);
+		double[] count = new double[times.length];
+
+		for (int i = 1; i < magnitudesOfAccelerations.length - 1; i++) {
+
+			double threshold = calculateMean(magnitudesOfAccelerations)
+					+ calculateStandardDeviation(magnitudesOfAccelerations);
+			if (isPeak(magnitudesOfAccelerations, i)) {
+				if (magnitudesOfAccelerations[i] >= threshold) {
+
+					count[i]++;
+
+				}
+			}
+		}
 		return count;
 	}
 

@@ -14,7 +14,8 @@ public class CSVData {
 	private double[][] data;
 	private String[] columnNames;
 	private int numColumns;
-	private String charReplace = ", ";
+	private String charReplace = ",";
+	private String endline = "#";
 
 	public CSVData(String filepath, String[] columnNames, int startRow) {
 		String dataString = readFileAsString(filepath);
@@ -32,9 +33,9 @@ public class CSVData {
 
 		for (int i = 0; i < lines.length - startRow; i++) {
 			String line = lines[startRow + i];
-			String[] coords = line.split(",");
+			String[] coords = line.split(charReplace);
 			for (int j = 0; j < numColumns; j++) {
-				if (coords[j].endsWith("#"))
+				if (coords[j].endsWith(endline))
 					coords[j] = coords[j].substring(0, coords[j].length() - 1);
 				double val = Double.parseDouble(coords[j]);
 				getData()[i][j] = val;
@@ -62,7 +63,7 @@ public class CSVData {
 			String line = lines[startRow + i];
 			String[] coords = line.split(",");
 			for (int j = 0; j < numColumns; j++) {
-				if (coords[j].endsWith("#"))
+				if (coords[j].endsWith(endline))
 					coords[j] = coords[j].substring(0, coords[j].length() - 1);
 				double val = Double.parseDouble(coords[j]);
 				getData()[i][j] = val;
@@ -70,6 +71,7 @@ public class CSVData {
 		}
 
 		replaceAbswithElapsed(data);
+
 	}
 
 	private String readFileAsString(String filepath) {
@@ -271,7 +273,7 @@ public class CSVData {
 	 */
 	public static void replaceAbswithElapsed(double[][] sensorData) {
 		for (int row = 1; row < sensorData.length; row++) {
-			sensorData[row][0] -= sensorData[0][0];
+			sensorData[row][0] = (sensorData[row][0] - sensorData[0][0]) * 1000.0;
 		}
 		sensorData[0][0] = 0;
 	}
