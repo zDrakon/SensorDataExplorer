@@ -22,7 +22,7 @@ public class StepCounter {
 	}
 
 	/***
-	 * takes in three vectors and returns the magnitude
+	 * Returns the 3D vector of all X Y Z mangitudes
 	 * 
 	 * @param x
 	 * @param y
@@ -44,20 +44,23 @@ public class StepCounter {
 	public static double[] countSteps(double[] times, double[][] sensorData, int range) {
 		double[] magnitudesOfAccelerations = calculateMagnitudesFor(sensorData);
 		double[] count = new double[times.length];
-		double threshold = 0;
+		double threshold = calculateMean(magnitudesOfAccelerations)
+				+ calculateStandardDeviation(magnitudesOfAccelerations); // Assume
+																			// naive
+																			// threshold
+																			// first
 
 		for (int i = 1; i < magnitudesOfAccelerations.length - 1; i++) {
 			if (range != 0 && range > 0) {
-				threshold = findThreshold(magnitudesOfAccelerations, range, i); // adaptive
-			} else {
-				threshold = calculateMean(magnitudesOfAccelerations)
-						+ calculateStandardDeviation(magnitudesOfAccelerations); // naive
-																					// threshold
+				threshold = findThreshold(magnitudesOfAccelerations, range, i); // change
+																				// to
+																				// adaptive
+																				// threshold
+																				// if
+																				// necessary
 			}
-
 			if (isPeak(magnitudesOfAccelerations, i)) {
 				if (magnitudesOfAccelerations[i] >= threshold) {
-
 					count[i]++;
 
 				}
