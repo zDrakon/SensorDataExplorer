@@ -11,14 +11,14 @@ public class Tester {
 
 	public static String videofile = "data/walkingSampleData.mp4";
 
-	public static int[] columns = new int[] { 1, 2, 3 }; // Columns subject to
+	public static int[] columns = new int[] { 3, 4, 5 }; // Columns subject to
 															// change due to
 															// each file being
 															// unique
 
 	public static double[][] sampleData;
 
-	public static int fileNum = 12; // choose what datafiles index file a tester
+	public static int fileNum = 2; // choose what datafiles index file a tester
 									// will want
 
 	private static final int SECOND_ROW_OF_FILE = 1; // The 2nd row of a file is
