@@ -310,7 +310,7 @@ public class CSVData {
 				if (c == data[0].length - 1) {
 					output += data[r][c] + "\n";
 				} else {
-					output += data[r][c] + ", ";
+					output += data[r][c] + ",";
 				}
 			}
 		}
@@ -330,7 +330,7 @@ public class CSVData {
 			if (i == columnNames.length - 1) {
 				output += columnNames[i];
 			} else {
-				output += columnNames[i] + ", ";
+				output += columnNames[i] + ",";
 			}
 		}
 		return output + "\n";

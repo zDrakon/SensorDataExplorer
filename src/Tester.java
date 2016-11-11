@@ -4,21 +4,21 @@ public class Tester {
 			"data/Alejandro/20StepsRightBackPocket.csv",
 			"data/Evan/anklewalk_11steps_after5seconds_before5seconds_straightpath.csv",
 			"data/Evan/anklewalk_31steps_after5seconds_withturns.csv", "data/Evan/armwalk_40steps_after_5_seconds.csv",
-			"data/Evan/handwalk_17steps_after_5_seconds.csv", "data/Warren/accel18step11secLeftArm.csv",
-			"data/Warren/accel18step11secLeftPocket.csv", "data/Warren/accel18steps11secLeftAnkle.csv",
-			"data/Warren/accel18steps11secRightAnkle.csv", "data/Warren/accel18steps11secRightArm.csv",
-			"data/Warren/accel18steps11secRightPocket.csv" };
+			"data/Evan/handwalk_17steps_after_5_seconds.csv", "data/Evan/pocketwalk_15steps_after_5_seconds.csv",
+			"data/Warren/accel18step11secLeftArm.csv", "data/Warren/accel18step11secLeftPocket.csv",
+			"data/Warren/accel18steps11secLeftAnkle.csv", "data/Warren/accel18steps11secRightAnkle.csv",
+			"data/Warren/accel18steps11secRightArm.csv", "data/Warren/accel18steps11secRightPocket.csv" };
 
 	public static String videofile = "data/walkingSampleData.mp4";
 
-	public static int[] columns = new int[] { 3, 4, 5 }; // Columns subject to
+	public static int[] columns = new int[] { 1, 2, 3 }; // Columns subject to
 															// change due to
 															// each file being
 															// unique
 
 	public static double[][] sampleData;
 
-	public static int fileNum = 2; // choose what datafiles index file a tester
+	public static int fileNum = 7; // choose what datafiles index file a tester
 									// will want
 
 	private static final int SECOND_ROW_OF_FILE = 1; // The 2nd row of a file is
@@ -35,7 +35,7 @@ public class Tester {
 
 	public static double[] times = dataset.getColumn(FIRST_COLUMN_OF_DATA);
 
-	public static double[][] accelerationData = ArrayHelper.extractColumns(sampleData, columns);
+	public static double[][] accelerationData;
 
 	public static final int ACCEPTABLE_ERROR_NUM_STEPS = 3; // In this
 															// experiment we
@@ -66,11 +66,13 @@ public class Tester {
 	 */
 	public static void main(String[] args) {
 		sampleData = dataset.getData();
+		ArrayHelper.extractColumns(sampleData, columns);
 
-		for (int i = START_RANGE_VALUE; i < END_RANGE_VALUE; i++) {
-			returnStepsWithN(datafiles[fileNum], i);
-		}
-		returnNaiveAmountOfSteps(datafiles[fileNum]);
+		dataset.writeDataToFile(datafiles[fileNum], dataset.getHugeStringOfData(sampleData));
+		// for (int i = START_RANGE_VALUE; i < END_RANGE_VALUE; i++) {
+		// returnStepsWithN(datafiles[fileNum], i);
+		// }
+		// returnNaiveAmountOfSteps(datafiles[fileNum]);
 	}
 
 	/***
@@ -81,14 +83,11 @@ public class Tester {
 	 * @param n
 	 */
 	public static void returnStepsWithN(String datafile, int n) {
-
 		double[] counts = StepCounter.countSteps(times, accelerationData, n);
-
 		if (StepCounter.numSteps(counts) <= ACTUAL_STEPS - ACCEPTABLE_ERROR_NUM_STEPS
 				|| StepCounter.numSteps(counts) >= ACTUAL_STEPS + ACCEPTABLE_ERROR_NUM_STEPS) {
 			System.out.println("# of Steps - Range value: " + StepCounter.numSteps(counts) + " - " + n);
 		}
-
 	}
 
 	/***
