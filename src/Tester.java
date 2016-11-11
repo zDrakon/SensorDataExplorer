@@ -36,6 +36,13 @@ public class Tester {
 		returnNaiveAmountOfSteps(datafiles[fileNum]);
 	}
 
+	/***
+	 * Prints the number of steps using adaptive threshold given an input range
+	 * of 'n'
+	 * 
+	 * @param datafile
+	 * @param n
+	 */
 	public static void returnStepsWithN(String datafile, int n) {
 
 		double[] counts = StepCounter.countSteps(times, accelerationData, n);
@@ -44,14 +51,13 @@ public class Tester {
 
 	}
 
+	/***
+	 * Prints out the naive algorithim's guess of how many steps The '0' in the
+	 * method is to indicate that it will use the naive threshold
+	 * 
+	 * @param datafile
+	 */
 	public static void returnNaiveAmountOfSteps(String datafile) {
-		CSVData dataset = new CSVData(datafile, 1);
-		double[][] sampleData;
-		sampleData = dataset.getData();
-
-		double[] times = dataset.getColumn(0);
-
-		double[][] accelerationData = ArrayHelper.extractColumns(sampleData, columns);
 
 		double[] counts = StepCounter.countSteps(times, accelerationData, 0);
 
