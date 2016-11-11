@@ -21,16 +21,53 @@ public class Tester {
 	public static int fileNum = 2; // choose what datafiles index file a tester
 									// will want
 
-	public static CSVData dataset = new CSVData(datafiles[fileNum], 1);
+	private static final int SECOND_ROW_OF_FILE = 1; // The 2nd row of a file is
+														// the 1st row of
+														// the double 2D array
 
-	public static double[] times = dataset.getColumn(0);
+	private static final int FIRST_COLUMN_OF_DATA = 0; // The 1st column of a
+														// file is under the
+														// first column name row
+														// is typically the
+														// elapsed time column
 
-	public static double[][] accelerationData = ArrayHelper.extractColumns(sampleData, columns);;
+	public static CSVData dataset = new CSVData(datafiles[fileNum], SECOND_ROW_OF_FILE);
 
+	public static double[] times = dataset.getColumn(FIRST_COLUMN_OF_DATA);
+
+	public static double[][] accelerationData = ArrayHelper.extractColumns(sampleData, columns);
+
+	public static final int ACCEPTABLE_ERROR_NUM_STEPS = 3; // In this
+															// experiment we
+															// considered a
+															// failed reading of
+															// steps if the # of
+															// steps counted
+															// exceeded + or - 3
+															// steps. (24 would
+															// not be counted if
+															// the actual steps
+															// was 20)
+
+	public static final int ACTUAL_STEPS = 20; // Should be clear by the
+												// data_description.txt or the
+												// name of the .csv file tested
+
+	// These variables are subject to change depending on how vast the dataset
+	// may be to find the optimal range value ('n')
+	public static final int START_RANGE_VALUE = 1;
+
+	public static final int END_RANGE_VALUE = 1000;
+
+	/***
+	 * Rurns both methods to print out.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		sampleData = dataset.getData();
 
-		for (int i = 0; i < 1000; i++) {
+		for (int i = START_RANGE_VALUE; i < END_RANGE_VALUE; i++) {
 			returnStepsWithN(datafiles[fileNum], i);
 		}
 		returnNaiveAmountOfSteps(datafiles[fileNum]);
@@ -47,7 +84,10 @@ public class Tester {
 
 		double[] counts = StepCounter.countSteps(times, accelerationData, n);
 
-		System.out.println("# of Steps - Range value: " + StepCounter.numSteps(counts) + " - " + n);
+		if (StepCounter.numSteps(counts) <= ACTUAL_STEPS - ACCEPTABLE_ERROR_NUM_STEPS
+				|| StepCounter.numSteps(counts) >= ACTUAL_STEPS + ACCEPTABLE_ERROR_NUM_STEPS) {
+			System.out.println("# of Steps - Range value: " + StepCounter.numSteps(counts) + " - " + n);
+		}
 
 	}
 
