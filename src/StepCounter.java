@@ -44,11 +44,17 @@ public class StepCounter {
 	public static double[] countSteps(double[] times, double[][] sensorData, int range) {
 		double[] magnitudesOfAccelerations = calculateMagnitudesFor(sensorData);
 		double[] count = new double[times.length];
+		double threshold = 0;
 
 		for (int i = 1; i < magnitudesOfAccelerations.length - 1; i++) {
-			double threshold = findThreshold(magnitudesOfAccelerations, range, i);
-			// double threshold = calculateMean(magnitudesOfAccelerations)
-			// + calculateStandardDeviation(magnitudesOfAccelerations);
+			if (range != 0 && range > 0) {
+				threshold = findThreshold(magnitudesOfAccelerations, range, i); // adaptive
+			} else {
+				threshold = calculateMean(magnitudesOfAccelerations)
+						+ calculateStandardDeviation(magnitudesOfAccelerations); // naive
+																					// threshold
+			}
+
 			if (isPeak(magnitudesOfAccelerations, i)) {
 				if (magnitudesOfAccelerations[i] >= threshold) {
 
@@ -61,25 +67,14 @@ public class StepCounter {
 		return count;
 	}
 
-	public static double[] naiveCountSteps(double[] times, double[][] sensorData) {
-		double[] magnitudesOfAccelerations = calculateMagnitudesFor(sensorData);
-		double[] count = new double[times.length];
-
-		for (int i = 1; i < magnitudesOfAccelerations.length - 1; i++) {
-
-			double threshold = calculateMean(magnitudesOfAccelerations)
-					+ calculateStandardDeviation(magnitudesOfAccelerations);
-			if (isPeak(magnitudesOfAccelerations, i)) {
-				if (magnitudesOfAccelerations[i] >= threshold) {
-
-					count[i]++;
-
-				}
-			}
-		}
-		return count;
-	}
-
+	/***
+	 * Returns true or false if an index of an array is the maximum of every
+	 * group of 3 indexes
+	 * 
+	 * @param magnitudesOfAccelerations
+	 * @param i
+	 * @return
+	 */
 	private static boolean isPeak(double[] magnitudesOfAccelerations, int i) {
 		if (magnitudesOfAccelerations[i - 1] < magnitudesOfAccelerations[i]
 				&& magnitudesOfAccelerations[i + 1] < magnitudesOfAccelerations[i]) {
@@ -133,15 +128,10 @@ public class StepCounter {
 	}
 
 	/***
-	 * 
 	 * Returns the # of steps
 	 * 
-	 * 
-	 * 
 	 * @param counts
-	 * 
 	 * @return
-	 * 
 	 */
 
 	public static int numSteps(double[] counts) {
@@ -154,6 +144,14 @@ public class StepCounter {
 		return count;
 	}
 
+	/***
+	 * Returns the adaptive threshold
+	 * 
+	 * @param data
+	 * @param range
+	 * @param index
+	 * @return adaptive threshold
+	 */
 	public static double findThreshold(double[] data, int range, int index) {
 		double output[] = new double[(index + range) - (index - range)];
 		int j = 0;

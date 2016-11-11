@@ -11,44 +11,40 @@ public class Tester {
 
 	public static String videofile = "data/walkingSampleData.mp4";
 
-	public static int[] columns = new int[] { 1, 2, 3 };
+	public static int[] columns = new int[] { 3, 4, 5 }; // Columns subject to
+															// change due to
+															// each file being
+															// unique
 
 	public static double[][] sampleData;
 
-	public static int fileNum = 12;
+	public static int fileNum = 2; // choose what datafiles index file a tester
+									// will want
 
 	public static CSVData dataset = new CSVData(datafiles[fileNum], 1);
 
 	public static double[] times = dataset.getColumn(0);
 
-	public static double[][] accelerationData;
+	public static double[][] accelerationData = ArrayHelper.extractColumns(sampleData, columns);;
 
 	public static void main(String[] args) {
-
 		sampleData = dataset.getData();
 
-		accelerationData = ArrayHelper.extractColumns(sampleData, columns);
-
-		for (int i = 0; i < 100; i++) {
-			doITAgain(i);
+		for (int i = 0; i < 1000; i++) {
+			returnStepsWithN(datafiles[fileNum], i);
 		}
-		original(datafiles[fileNum]);
+		returnNaiveAmountOfSteps(datafiles[fileNum]);
 	}
 
-	public static void doITAgain(int i) {
-		doIt(datafiles[fileNum], i);
-	}
-
-	// Create data set
-	public static void doIt(String datafile, int n) {
+	public static void returnStepsWithN(String datafile, int n) {
 
 		double[] counts = StepCounter.countSteps(times, accelerationData, n);
 
-		System.out.println(StepCounter.numSteps(counts) + " - " + n);
+		System.out.println("# of Steps - Range value: " + StepCounter.numSteps(counts) + " - " + n);
 
 	}
 
-	public static void original(String datafile) {
+	public static void returnNaiveAmountOfSteps(String datafile) {
 		CSVData dataset = new CSVData(datafile, 1);
 		double[][] sampleData;
 		sampleData = dataset.getData();
@@ -57,9 +53,9 @@ public class Tester {
 
 		double[][] accelerationData = ArrayHelper.extractColumns(sampleData, columns);
 
-		double[] counts = StepCounter.naiveCountSteps(times, accelerationData);
+		double[] counts = StepCounter.countSteps(times, accelerationData, 0);
 
-		System.out.println(StepCounter.numSteps(counts));
+		System.out.println("Naive # of Steps: " + StepCounter.numSteps(counts));
 	}
 
 }

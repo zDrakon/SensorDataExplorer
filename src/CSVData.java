@@ -14,8 +14,11 @@ public class CSVData {
 	private double[][] data;
 	private String[] columnNames;
 	private int numColumns;
+
+	// The following are subject to change if needed. Each file is unique
 	private String charReplace = ",";
 	private String endline = "#";
+	private boolean replaceTimes = false;
 
 	public CSVData(String filepath, String[] columnNames, int startRow) {
 		String dataString = readFileAsString(filepath);
@@ -41,8 +44,9 @@ public class CSVData {
 				getData()[i][j] = val;
 			}
 		}
-
-		replaceAbswithElapsed(data);
+		if (replaceTimes) {
+			replaceAbswithElapsed(data);
+		}
 	}
 
 	public CSVData(String filepath, int startRow) {
@@ -69,8 +73,9 @@ public class CSVData {
 				getData()[i][j] = val;
 			}
 		}
-
-		replaceAbswithElapsed(data);
+		if (replaceTimes) {
+			replaceAbswithElapsed(data);
+		}
 
 	}
 
@@ -258,10 +263,20 @@ public class CSVData {
 		getData()[row][col] = newValue;
 	}
 
+	/***
+	 * Returns a 2D double array of the dataset
+	 * 
+	 * @return
+	 */
 	public double[][] getData() {
 		return data;
 	}
 
+	/***
+	 * Sets the dataset
+	 * 
+	 * @param data
+	 */
 	public void setData(double[][] data) {
 		this.data = data;
 	}
@@ -278,8 +293,14 @@ public class CSVData {
 		sensorData[0][0] = 0;
 	}
 
+	/***
+	 * Returns the entire dataset in String datatype
+	 * 
+	 * @param data
+	 * @return
+	 */
 	public String getHugeStringOfData(double[][] data) {
-		String output = extractContent(columnNames);
+		String output = extractColumnNames(columnNames);
 		for (int r = 0; r < data.length; r++) {
 			for (int c = 0; c < data[0].length; c++) {
 				if (c == data[0].length - 1) {
@@ -293,7 +314,13 @@ public class CSVData {
 
 	}
 
-	private String extractContent(String[] columnNames) {
+	/***
+	 * Returns the string of all column names
+	 * 
+	 * @param columnNames
+	 * @return
+	 */
+	private String extractColumnNames(String[] columnNames) {
 		String output = "";
 		for (int i = 0; i < columnNames.length; i++) {
 			if (i == columnNames.length - 1) {
@@ -305,6 +332,12 @@ public class CSVData {
 		return output + "\n";
 	}
 
+	/***
+	 * Overwrite the current data file to the corrected format.
+	 * 
+	 * @param filePath
+	 * @param data
+	 */
 	public void writeDataToFile(String filePath, String data) {
 		File outFile = new File(filePath);
 
