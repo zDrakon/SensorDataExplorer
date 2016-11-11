@@ -287,10 +287,14 @@ public class CSVData {
 	 * @param sensorData
 	 */
 	public static void replaceAbswithElapsed(double[][] sensorData) {
+		int firstRowIndex = 0;
+		int columnIndex = 0;
 		for (int row = 1; row < sensorData.length; row++) {
-			sensorData[row][0] = (sensorData[row][0] - sensorData[0][0]) * 1000.0;
+			sensorData[row][columnIndex] = (sensorData[row][columnIndex] - sensorData[firstRowIndex][columnIndex])
+					* 1000.0; // change all times first
 		}
-		sensorData[0][0] = 0;
+		sensorData[firstRowIndex][columnIndex] = 0; // then change first time to
+													// 0
 	}
 
 	/***
@@ -333,7 +337,8 @@ public class CSVData {
 	}
 
 	/***
-	 * Overwrite the current data file to the corrected format.
+	 * Overwrite the current data file to the corrected format. Typically used
+	 * for rewriting/reformatting a data file correctly.
 	 * 
 	 * @param filePath
 	 * @param data
