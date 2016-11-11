@@ -293,8 +293,8 @@ public class CSVData {
 			sensorData[row][columnIndex] = (sensorData[row][columnIndex] - sensorData[firstRowIndex][columnIndex])
 					* 1000.0; // change all times first
 		}
-		sensorData[firstRowIndex][columnIndex] = 0; // then change first time to
-													// 0
+		sensorData[firstRowIndex][columnIndex] = 0; // then change initial time
+													// to 0
 	}
 
 	/***
