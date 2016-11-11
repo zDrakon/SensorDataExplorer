@@ -22,7 +22,7 @@ public class StepCounter {
 	}
 
 	/***
-	 * Returns the 3D vector of all X Y Z mangitudes
+	 * Returns the 3D vector of all X Y Z magnitudes
 	 * 
 	 * @param x
 	 * @param y
